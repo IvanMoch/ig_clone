@@ -57,7 +57,9 @@ export class PostController{
             if (posts.length === 0) {
                 return res.status(404).json({ message: 'No posts found for this user' });
             }
-            return res.status(200).json({ message: 'Posts fetched successfully', data: posts });
+            return res.status(200).json({
+                message: 'Posts fetched successfully', data: posts[0]
+            });
         } catch (error) {
             console.error('Error while fetching posts:', error);
             return res.status(500).json({ error: 'Internal Error' });
@@ -72,7 +74,7 @@ export class PostController{
             const post = await PostModel.getPaginatedPosts(page, limit);
             return res.status(200).json({
                 success: true,
-                data: post,
+                data: post[0],
                 page: page,
                 limit: limit
             });

@@ -1,3 +1,4 @@
+import { followersModel } from "../Models/followers.model.js";
 export class FollowersController {
     
 

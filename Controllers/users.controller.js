@@ -50,7 +50,8 @@ export class UsersController {
 
     }
 
-    static async createUser(req, res) {
+    static createUser = async (req, res) => {
+        console.log(req.body);
         const { userName, email, password } = req.body;
 
         try {
@@ -96,10 +97,10 @@ export class UsersController {
     }
 
     static async getUserByUserName(req, res) {
-        const userName = req.params.userName;
+        const username = req.params.username;
 
         try {
-            const user = await UsersModel.getUserByUserName(userName);
+            const user = await UsersModel.getUserByUsername(username);
             if (user.length === 0) {
                 return res.status(404).json({ error: 'User not found' });
             }

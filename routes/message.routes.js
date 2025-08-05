@@ -5,4 +5,4 @@ export const messageRouter = Router();
 
 messageRouter.post('/create', MessageController.createMessage);
 messageRouter.put('/update-status', MessageController.updateMessageStatus);
-messageRouter.get('/group/:groupId', MessageController.getMessagesList);
+messageRouter.get('/list/:receiverId/:senderId', MessageController.getMessagesList);

@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
+import { pool } from "../db.js";
 export class UsersModel{
     
-    async getAllUsers() {
+    static async getAllUsers() {
         try {
             const [rows] = await pool.query('SELECT * FROM users');
             return rows;
@@ -11,7 +12,7 @@ export class UsersModel{
         }
     }
 
-    async getUserById(userId) {
+    static async getUserById(userId) {
         try {
             const [rows] = await pool.query('SELECT * FROM users WHERE user_id = ?', [userId]);
             return rows;
@@ -21,7 +22,7 @@ export class UsersModel{
         }
     }
 
-    async verifyUser(email) {
+    static async verifyUser(email) {
         try {
             const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
             return rows;
@@ -31,7 +32,7 @@ export class UsersModel{
         }
     }
 
-    async createUser(userName, email, password) {
+    static async createUser(userName, email, password) {
         try {
             const hashedPassword = await bcrypt.hash(password, 10);
             const [result] = await pool.query('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)', [userName, email, hashedPassword]);
@@ -42,7 +43,7 @@ export class UsersModel{
         }
     }
 
-    async updateUser(userId, userName, email, password) {
+    static async updateUser(userId, userName, email, password) {
         try {
             const [result] = await pool.query('UPDATE users SET username = ?, email = ?, password_hash = ? WHERE user_id = ?', [userName, email, password, userId]);
             return result;
@@ -52,7 +53,7 @@ export class UsersModel{
         }
     }
 
-    async deleteUser(userId) {
+    static async deleteUser(userId) {
         try {
             const [result] = await pool.query('DELETE FROM users WHERE user_id = ?', [userId]);
             return result;

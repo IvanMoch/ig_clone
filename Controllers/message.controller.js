@@ -34,14 +34,14 @@ export class MessageController{
     }
 
     static async getMessagesList(req, res) {
-        const { groupId } = req.params;
+        const { receiverId, senderId } = req.params;
 
         try {
-            const messages = await MessageModel.getMessagesByGroup(groupId);
+            const messages = await MessageModel.getMessagesByGroup(senderId, receiverId);
             if (messages.length === 0) {
                 return res.status(404).json({ message: 'No messages found for this group' });
             }
-            return res.status(200).json({ message: 'Messages fetched successfully', data: messages });
+            return res.status(200).json({ message: 'Messages fetched successfully', data: messages[0] });
         } catch (error) {
             console.error('Error while fetching messages:', error);
             return res.status(500).json({ message: 'Internal Error' });

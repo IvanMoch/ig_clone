@@ -1,10 +1,11 @@
+import { pool } from "../db.js";
 export class PostModel{
     
 
-    async createPost(userId, caption, mediaUrl, mediaType) {
+    static async createPost(userId, caption, mediaUrl, mediaType) {
         try {
             const result=  await pool.query(
-                'INSERT INTO posts (userId, caption, mediaUrl, mediaType) VALUES (?, ?, ?, ?)',
+                'INSERT INTO posts (user_id, caption, media_url, media_type) VALUES (?, ?, ?, ?)',
                 [userId, caption, mediaUrl, mediaType])
             if (result.affectedRows === 0) {
                 throw new Error('Post was not created');
@@ -17,10 +18,10 @@ export class PostModel{
         }
     }
 
-    async updatePost(postId, caption, mediaUrl, mediaType) {
+    static async updatePost(postId, caption, mediaUrl, mediaType) {
         try {
             const result = await pool.query(
-                'UPDATE posts SET caption = ?, mediaUrl = ?, mediaType = ? WHERE id = ?',
+                'UPDATE posts SET caption = ?, media_url = ?, media_type = ? WHERE id = ?',
                 [caption, mediaUrl, mediaType, postId]
             );
             return result;
@@ -42,7 +43,7 @@ export class PostModel{
 
     static async getPostsByUser(userId) {
         try {
-            const result = await pool.query('SELECT * FROM posts WHERE userId = ?', [userId]);
+            const result = await pool.query('SELECT * FROM posts WHERE user_id = ?', [userId]);
             return result;
         } catch (error) {
             console.error('Error while fetching posts by user:', error);

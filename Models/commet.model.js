@@ -1,9 +1,10 @@
+import { pool } from "../db.js";
 export class CommentModel {
     
 
     static async createComment(userId, postId, content) {
         try {
-            const result = await db.query('INSERT INTO comments (user_id, post_id, text) VALUES (?, ?, ?)', [userId, postId, content]);
+            const result = await pool.query('INSERT INTO comments (user_id, post_id, text) VALUES (?, ?, ?)', [userId, postId, content]);
             return result;
         } catch (error) {
             console.error('Error while creating comment: ', error);
@@ -13,7 +14,7 @@ export class CommentModel {
 
     static async deleteComment(commentId) {
         try {
-            const result = await db.query('DELETE FROM comments WHERE comment_id = ?', [commentId]);
+            const result = await pool.query('DELETE FROM comments WHERE comment_id = ?', [commentId]);
             return result;
         } catch (error) {
             console.error('Error while deleting comment: ', error);

@@ -1,9 +1,10 @@
+import { pool } from "../db.js";
 export class MessageModel {
     
-    async createMessage(senderId, receiverId, content, messageType, status) {
+    static async createMessage(senderId, receiverId, content, messageType, status) {
         try {
             const result = await pool.query(
-                'INSERT INTO messages (sender_id, receiver_id, content, message_type, status) VALUES (?, ?, ?, ?, ?)',
+                'INSERT INTO private_messages (sender_id, receiver_id, content, message_type, status) VALUES (?, ?, ?, ?, ?)',
                 [senderId, receiverId, content, messageType, status]
             );
             if (result.affectedRows === 0) {
@@ -19,7 +20,7 @@ export class MessageModel {
     static async updateStatus(messageId, status) {
         try {
             const result = await pool.query(
-                'UPDATE messages SET status = ? WHERE message_id = ?',
+                'UPDATE private_messages SET status = ? WHERE message_id = ?',
                 [status, messageId]
             );
         }catch(error) {
@@ -31,7 +32,7 @@ export class MessageModel {
     static async getMessagesByGroup(senderId, receiverId) {
         try {
             const result = await pool.query(
-                'SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)',
+                'SELECT * FROM private_messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)',
                 [senderId, receiverId, receiverId, senderId]
             );
             return result;
