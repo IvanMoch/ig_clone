@@ -2,8 +2,9 @@ import { PostModel } from '../Models/post.model.js';
 export class PostController{
     
     static async newPost(req, res) {
-        const { userId, caption, mediaUrl, mediaType } = req.body;
-
+        console.log(req.body)
+        const { userId, caption, mediaType } = req.body;
+        const mediaUrl = req.file ? req.file.path : null;
         try {
             const newPost = await PostModel.createPost(userId, caption, mediaUrl, mediaType);
             if (newPost.affectedRows === 0) {

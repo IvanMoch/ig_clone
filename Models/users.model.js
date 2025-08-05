@@ -32,10 +32,10 @@ export class UsersModel{
         }
     }
 
-    static async createUser(userName, email, password) {
+    static async createUser(userName, email, password, bio, profilePic) {
         try {
             const hashedPassword = await bcrypt.hash(password, 10);
-            const [result] = await pool.query('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)', [userName, email, hashedPassword]);
+            const [result] = await pool.query('INSERT INTO users (username, email, password_hash, bio, profile_pic) VALUES (?, ?, ?, ?, ?)', [userName, email, hashedPassword, bio, profilePic]);
             return result;
         } catch (error) {
             console.error('Error creating user:', error);
@@ -43,9 +43,9 @@ export class UsersModel{
         }
     }
 
-    static async updateUser(userId, userName, email, password) {
+    static async updateUser(userId, userName, email, password, bio, profilePic) {
         try {
-            const [result] = await pool.query('UPDATE users SET username = ?, email = ?, password_hash = ? WHERE user_id = ?', [userName, email, password, userId]);
+            const [result] = await pool.query('UPDATE users SET username = ?, email = ?, password_hash = ?, bio = ?, profile_pic = ? WHERE user_id = ?', [userName, email, password, userId, bio, profilePic]);
             return result;
         } catch (error) {
             console.error('Error updating user:', error);

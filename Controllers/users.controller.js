@@ -51,27 +51,28 @@ export class UsersController {
     }
 
     static createUser = async (req, res) => {
-        console.log(req.body);
-        const { userName, email, password } = req.body;
+        const { userName, email, password, bio } = req.body;
+        const profilePic = req.file ? req.file.path : null;
 
         try {
-            const user = await UsersModel.createUser(userName, email, password);
+            const user = await UsersModel.createUser(userName, email, password, bio, profilePic);
             if (user.affectedRows === 0) {
                 return res.status(400).json({ error: 'User was not created' });
             }
             return res.status(201).json({ message: 'User was created successfully', userId: user.insertId });
         } catch (error) {
             console.error('Error while creating the user:', error);
-            return res.status > (500).json({ error: 'Internal Error' });
+            return res.status(500).json({ error: 'Internal Error' });
         }
     }
 
     static async updateUser(req, res) {
         const userId = req.params.id;
-        const { userName, email, password } = req.body;
+        const { userName, email, password, bio } = req.body;
+        const profilePic = req.file ? req.file.path : null;
 
         try {
-            const result = await UsersModel.updateUser(userId, userName, email, password);
+            const result = await UsersModel.updateUser(userId, userName, email, password, bio, profilePic);
             if (result.affectedRows === 0) {
                 return res.status(404).json({ error: 'User not found' });
             }
